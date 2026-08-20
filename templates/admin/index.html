@@ -1,0 +1,46 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block title %}CashFlow Admin Dashboard{% endblock %}
+{% block content %}
+<div class="cf-admin-wrap">
+  <div class="cf-admin-head">
+    <div><h1 class="cf-admin-title">Admin Dashboard</h1><p class="cf-admin-sub">Manage cash operations, users, allocations and approvals from one place.</p></div>
+    <div><a class="button" href="{% url 'dashboard' %}" style="background:#111318;color:#fff">← CashFlow App</a></div>
+  </div>
+  <div class="cf-grid">
+    <div class="cf-stat"><a href="{% url 'cash_admin:cashapp_user_changelist' %}"><div class="label">Cashiers</div><div class="value">{{ cashflow_stats.employees }}</div></a></div>
+    <div class="cf-stat"><a href="{% url 'cash_admin:cashapp_user_changelist' %}"><div class="label">Managers</div><div class="value">{{ cashflow_stats.managers }}</div></a></div>
+    <div class="cf-stat"><a href="{% url 'cash_admin:cashapp_cashentry_changelist' %}?status=pending"><div class="label">Pending</div><div class="value">{{ cashflow_stats.pending }}</div></a></div>
+    <div class="cf-stat"><a href="{% url 'cash_admin:cashapp_cashentry_changelist' %}?status=approved"><div class="label">Approved</div><div class="value">{{ cashflow_stats.approved }}</div></a></div>
+    <div class="cf-stat"><a href="{% url 'cash_admin:cashapp_cashentry_changelist' %}?status=revised"><div class="label">Revised</div><div class="value">{{ cashflow_stats.revised }}</div></a></div>
+  </div>
+  <div class="cf-grid">
+    <div class="cf-stat"><a href="{% url 'cash_admin:cashapp_cashentry_changelist' %}"><div class="label">Rejected</div><div class="value">{{ cashflow_stats.rejected }}</div></a></div>
+    <div class="cf-stat"><div class="label">Collection</div><div class="value">₹{{ cashflow_stats.collection|floatformat:2 }}</div></div>
+    <div class="cf-stat"><div class="label">Deposit</div><div class="value">₹{{ cashflow_stats.deposit|floatformat:2 }}</div></div>
+    <div class="cf-stat"><div class="label">Expenses</div><div class="value">₹{{ cashflow_stats.expenses|floatformat:2 }}</div></div>
+    <div class="cf-stat"><div class="label">Difference</div><div class="value">₹{{ cashflow_stats.difference|floatformat:2 }}</div></div>
+  </div>
+  <div class="cf-two">
+    <section class="cf-panel">
+      <div class="cf-panel-head"><h2>Recent Cash Entries</h2><a href="{% url 'cash_admin:cashapp_cashentry_changelist' %}">View all →</a></div>
+      <div class="cf-panel-body"><table class="cf-table"><thead><tr><th>Date</th><th>Employee</th><th>Brand / Location</th><th>Type</th><th>Difference</th><th>Status</th></tr></thead><tbody>
+      {% for e in cashflow_recent %}<tr><td>{{ e.entry_date }}</td><td><a href="{% url 'cash_admin:cashapp_cashentry_change' e.pk %}">{{ e.cashier.get_full_name|default:e.cashier.username }}</a></td><td>{{ e.brand }} · {{ e.location }}</td><td>{{ e.get_cash_type_display }}</td><td class="cf-money">₹{{ e.difference|floatformat:2 }}</td><td><span class="cf-badge cf-{{ e.status }}">{{ e.get_status_display }}</span></td></tr>{% empty %}<tr><td colspan="6">No cash entries yet.</td></tr>{% endfor %}
+      </tbody></table></div>
+    </section>
+    <section class="cf-panel">
+      <div class="cf-panel-head"><h2>Quick Management</h2></div>
+      <div class="cf-quick">
+        <a href="{% url 'cash_admin:cashapp_user_changelist' %}">👥 Employees & Managers</a>
+        <a href="{% url 'cash_admin:cashapp_brand_changelist' %}">🏷️ Brands</a>
+        <a href="{% url 'cash_admin:cashapp_location_changelist' %}">📍 Locations</a>
+        <a href="{% url 'cash_admin:cashapp_cashentry_changelist' %}">💰 Cash Entries</a>
+        <a href="{% url 'cash_admin:cashapp_denomination_changelist' %}">🪙 Denominations</a>
+        <a href="{% url 'cash_admin:cashapp_attachment_changelist' %}">📎 Attachments</a>
+        <a href="{% url 'cash_admin:cashapp_approvalhistory_changelist' %}">✅ Approval History</a>
+        <a href="{% url 'cash_admin:password_change' %}">⚙️ Change Password</a>
+      </div>
+    </section>
+  </div>
+</div>
+{% endblock %}

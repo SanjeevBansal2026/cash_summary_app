@@ -1,0 +1,5 @@
+{% extends "admin/base.html" %}
+{% load static %}
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" href="{% static 'css/admin_custom.css' %}">{% endblock %}
+{% block branding %}<h1 id="site-name"><a href="{% url 'cash_admin:index' %}">CashFlow <span style="color:#e31b23">Control Center</span></a></h1>{% endblock %}
+{% block nav-global %}{% endblock %}

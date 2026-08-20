@@ -1,0 +1,6 @@
+{% extends "admin/base.html" %}
+{% load static %}
+{% block title %}{{ title }} | CashFlow Control Center{% endblock %}
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" href="{% static 'admin/css/cash_admin.css' %}">{% endblock %}
+{% block branding %}<div class="cash-admin-brand"><span class="mark">CF</span><div><strong>CashFlow</strong><small>CONTROL CENTER</small></div></div>{% endblock %}
+{% block nav-global %}<div class="admin-top-link"><a href="/">← Back to CashFlow Dashboard</a></div>{% endblock %}
